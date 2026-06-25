@@ -117,3 +117,11 @@ Neste endpoint você monta a tabela de classificação clássica.
 - `children[i].standings.entries`: Array com os 4 times do grupo, **já ordenados do 1º ao 4º lugar**.
 - `...entries[j].team.name`: Nome da seleção.
 - `...entries[j].stats`: Array de estatísticas do time na tabela. Procure pelo objeto onde `type == "points"` para exibir os pontos, `type == "wins"` para vitórias, etc.
+
+### C) Informações do Torneio e Mata-mata
+**Endpoint:** `GET https://sports.core.api.espn.com/v2/sports/soccer/leagues/fifa.world`
+
+Este endpoint traz as informações estruturais do torneio. Para as chaves de mata-mata (Oitavas, Quartas, Semi e Final), a API da ESPN funciona da seguinte forma:
+- No endpoint de **Placar e Jogos (`scoreboard`)**, os jogos da fase de mata-mata vão aparecer normalmente.
+- O que muda é que dentro de `events[i].season` ou `events[i].notes`, a ESPN vai mandar uma flag identificando que aquele jogo é um "Round of 16" (Oitavas) ou "Quarterfinal" (Quartas). 
+- O frontend apenas precisa ler o texto/tipo do jogo retornado no `scoreboard` e agrupá-los visualmente em chaves para o usuário.
