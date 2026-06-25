@@ -161,13 +161,70 @@
             <div class="app-sub">Bolão Compartilhado</div>
         </div>
     </div>
-    <a href="login.html" class="btn btn-outline">Fazer meu bolão</a>
+    <div style="display:flex;gap:0.5rem;align-items:center">
+        <button id="lang-btn" class="btn btn-outline" onclick="toggleIdioma()" style="font-size:0.75rem;padding:0.35rem 0.75rem;font-weight:700">PT</button>
+        <a href="login.html" class="btn btn-outline">Fazer meu bolão</a>
+    </div>
 </header>
 
 <div id="root"><div class="loading">Carregando bolão...</div></div>
 
 <script>
 const ESPN_SCOREBOARD = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard';
+
+const TRADUCOES = {
+    'Albania': 'Albânia', 'Algeria': 'Argélia', 'Angola': 'Angola',
+    'Argentina': 'Argentina', 'Australia': 'Austrália', 'Austria': 'Áustria',
+    'Bahrain': 'Bahrein', 'Belgium': 'Bélgica', 'Bolivia': 'Bolívia',
+    'Brazil': 'Brasil', 'Burkina Faso': 'Burkina Faso',
+    'Cameroon': 'Camarões', 'Canada': 'Canadá', 'Cape Verde': 'Cabo Verde',
+    'Chile': 'Chile', 'China PR': 'China', 'China': 'China',
+    'Colombia': 'Colômbia', 'Congo DR': 'Rep. Dem. do Congo',
+    'Congo, DR': 'Rep. Dem. do Congo', 'DR Congo': 'Rep. Dem. do Congo',
+    "Côte d'Ivoire": 'Costa do Marfim', "Cote d'Ivoire": 'Costa do Marfim',
+    'Ivory Coast': 'Costa do Marfim', 'Costa Rica': 'Costa Rica',
+    'Croatia': 'Croácia', 'Czech Republic': 'República Tcheca',
+    'Czechia': 'República Tcheca', 'Denmark': 'Dinamarca',
+    'Ecuador': 'Equador', 'Egypt': 'Egito', 'England': 'Inglaterra',
+    'France': 'França', 'Gabon': 'Gabão', 'Georgia': 'Geórgia',
+    'Germany': 'Alemanha', 'Ghana': 'Gana', 'Greece': 'Grécia',
+    'Guinea': 'Guiné', 'Honduras': 'Honduras', 'Hungary': 'Hungria',
+    'Indonesia': 'Indonésia', 'IR Iran': 'Irã', 'Iran': 'Irã',
+    'Iraq': 'Iraque', 'Jamaica': 'Jamaica', 'Japan': 'Japão',
+    'Jordan': 'Jordânia', 'Korea Republic': 'Coreia do Sul',
+    'South Korea': 'Coreia do Sul', 'North Korea': 'Coreia do Norte',
+    'Mali': 'Mali', 'Mexico': 'México', 'Morocco': 'Marrocos',
+    'Mozambique': 'Moçambique', 'Netherlands': 'Países Baixos',
+    'New Zealand': 'Nova Zelândia', 'Nigeria': 'Nigéria',
+    'Norway': 'Noruega', 'Oman': 'Omã', 'Panama': 'Panamá',
+    'Paraguay': 'Paraguai', 'Peru': 'Peru', 'Poland': 'Polônia',
+    'Portugal': 'Portugal', 'Qatar': 'Catar', 'Romania': 'Romênia',
+    'Saudi Arabia': 'Arábia Saudita', 'Scotland': 'Escócia',
+    'Senegal': 'Senegal', 'Serbia': 'Sérvia', 'Slovakia': 'Eslováquia',
+    'Slovenia': 'Eslovênia', 'South Africa': 'África do Sul',
+    'Spain': 'Espanha', 'Switzerland': 'Suíça',
+    'Tanzania': 'Tanzânia', 'Trinidad and Tobago': 'Trinidad e Tobago',
+    'Tunisia': 'Tunísia', 'Turkey': 'Turquia', 'Türkiye': 'Turquia',
+    'Ukraine': 'Ucrânia', 'United States': 'Estados Unidos',
+    'USA': 'Estados Unidos', 'Uruguay': 'Uruguai',
+    'Uzbekistan': 'Uzbequistão', 'Venezuela': 'Venezuela',
+    'Wales': 'País de Gales', 'Zambia': 'Zâmbia',
+};
+
+let idioma = localStorage.getItem('lang-copa') || 'pt';
+
+function traduzir(nome) {
+    return idioma === 'pt' ? (TRADUCOES[nome] || nome) : nome;
+}
+
+function toggleIdioma() {
+    idioma = idioma === 'pt' ? 'en' : 'pt';
+    localStorage.setItem('lang-copa', idioma);
+    document.getElementById('lang-btn').textContent = idioma.toUpperCase();
+    document.querySelectorAll('[data-name-en]').forEach(el => {
+        el.textContent = traduzir(el.dataset.nameEn);
+    });
+}
 
 async function init() {
     const root = document.getElementById('root');
@@ -196,6 +253,7 @@ async function init() {
         (bolao.palpites || []).forEach(p => { palpites[p.jogo_id] = p.resultado_escolhido; });
 
         document.title = `Bolão de ${bolao.nome_dono} · Copa 2026`;
+        document.getElementById('lang-btn').textContent = idioma.toUpperCase();
 
         // Owner banner
         const banner = document.createElement('div');
@@ -293,11 +351,11 @@ function buildCard(ev, palpites) {
         <div class="match-teams">
             <div class="team home">
                 <img src="${home.team.logo || ''}" alt="${esc(home.team.name)}" class="team-flag" onerror="this.style.display='none'">
-                <span class="team-name">${home.team.name}</span>
+                <span class="team-name" data-name-en="${esc(home.team.name)}">${traduzir(home.team.name)}</span>
             </div>
             <div class="score-area">${scoreHtml}</div>
             <div class="team away">
-                <span class="team-name">${away.team.name}</span>
+                <span class="team-name" data-name-en="${esc(away.team.name)}">${traduzir(away.team.name)}</span>
                 <img src="${away.team.logo || ''}" alt="${esc(away.team.name)}" class="team-flag" onerror="this.style.display='none'">
             </div>
         </div>

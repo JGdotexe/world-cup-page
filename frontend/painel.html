@@ -315,6 +315,33 @@
         .loading, .empty-state { text-align: center; padding: 3rem; color: var(--muted); font-size: 0.875rem; }
         .error-state { text-align: center; padding: 3rem; color: var(--red); font-size: 0.875rem; }
 
+        /* ── Chaveamento (bracket) ── */
+        .bracket {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+            align-items: flex-start;
+        }
+        .bracket::-webkit-scrollbar { height: 5px; }
+        .bracket::-webkit-scrollbar-track { background: var(--bg); }
+        .bracket::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+        .bracket-round { flex: 0 0 260px; }
+
+        .bracket-round-title {
+            font-size: 0.65rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--muted);
+            text-align: center;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .bracket-round-title.highlight { color: var(--gold); border-bottom-color: var(--gold); }
+
+        .bracket-round .match-card { margin-bottom: 0.625rem; }
+
         /* ── Responsive ── */
         @media (max-width: 500px) {
             .team-name { font-size: 0.78rem; }
@@ -339,15 +366,17 @@
     </div>
     <div class="header-right">
         <span class="user-name" id="user-name"></span>
+        <button class="btn btn-ghost" id="lang-btn" onclick="toggleIdioma()" title="Idioma dos times" style="font-size:0.7rem;font-weight:700;letter-spacing:0.05em;border:1px solid var(--border);border-radius:4px;padding:0.2rem 0.5rem;color:var(--gold)">PT</button>
         <button class="btn btn-ghost" onclick="abrirModal('modal-menu')" title="Menu">&#9776;</button>
     </div>
 </header>
 
 <!-- ── Tabs ── -->
 <nav class="tab-nav">
-    <button class="tab-btn active" data-tab="jogos"   onclick="showTab('jogos')">⚽ Jogos</button>
-    <button class="tab-btn"        data-tab="grupos"  onclick="showTab('grupos')">Grupos</button>
-    <button class="tab-btn"        data-tab="campeao" onclick="showTab('campeao')">Campeão</button>
+    <button class="tab-btn active" data-tab="jogos"        onclick="showTab('jogos')">⚽ Jogos</button>
+    <button class="tab-btn"        data-tab="grupos"       onclick="showTab('grupos')">Grupos</button>
+    <button class="tab-btn"        data-tab="chaveamento"  onclick="showTab('chaveamento')">🏆 Chaveamento</button>
+    <button class="tab-btn"        data-tab="campeao"      onclick="showTab('campeao')">Campeão</button>
 </nav>
 
 <main>
@@ -365,6 +394,11 @@
         <div class="grupos-grid" id="grupos-container">
             <div class="loading">Carregando classificação...</div>
         </div>
+    </section>
+
+    <!-- Chaveamento -->
+    <section id="tab-chaveamento" class="tab-section content hidden">
+        <div id="chaveamento-container"><div class="loading">Carregando chaveamento...</div></div>
     </section>
 
     <!-- Campeão -->
@@ -403,8 +437,67 @@
 const ESPN = {
     scoreboard: 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard',
     standings:  'https://site.api.espn.com/apis/v2/sports/soccer/fifa.world/standings',
-    teams:      'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/teams',
 };
+
+// ── Traduções ─────────────────────────────────────────────────────────────
+const TRADUCOES = {
+    'Albania': 'Albânia', 'Algeria': 'Argélia', 'Angola': 'Angola',
+    'Argentina': 'Argentina', 'Australia': 'Austrália', 'Austria': 'Áustria',
+    'Bahrain': 'Bahrein', 'Belgium': 'Bélgica', 'Bolivia': 'Bolívia',
+    'Brazil': 'Brasil', 'Burkina Faso': 'Burkina Faso',
+    'Cameroon': 'Camarões', 'Canada': 'Canadá', 'Cape Verde': 'Cabo Verde',
+    'Chile': 'Chile', 'China PR': 'China', 'China': 'China',
+    'Colombia': 'Colômbia', 'Congo DR': 'Rep. Dem. do Congo',
+    'Congo, DR': 'Rep. Dem. do Congo', 'DR Congo': 'Rep. Dem. do Congo',
+    "Côte d'Ivoire": 'Costa do Marfim', "Cote d'Ivoire": 'Costa do Marfim',
+    'Ivory Coast': 'Costa do Marfim', 'Costa Rica': 'Costa Rica',
+    'Croatia': 'Croácia', 'Czech Republic': 'República Tcheca',
+    'Czechia': 'República Tcheca', 'Denmark': 'Dinamarca',
+    'Ecuador': 'Equador', 'Egypt': 'Egito', 'England': 'Inglaterra',
+    'France': 'França', 'Gabon': 'Gabão', 'Georgia': 'Geórgia',
+    'Germany': 'Alemanha', 'Ghana': 'Gana', 'Greece': 'Grécia',
+    'Guinea': 'Guiné', 'Honduras': 'Honduras', 'Hungary': 'Hungria',
+    'Indonesia': 'Indonésia', 'IR Iran': 'Irã', 'Iran': 'Irã',
+    'Iraq': 'Iraque', 'Jamaica': 'Jamaica', 'Japan': 'Japão',
+    'Jordan': 'Jordânia', 'Korea Republic': 'Coreia do Sul',
+    'South Korea': 'Coreia do Sul', 'North Korea': 'Coreia do Norte',
+    'Mali': 'Mali', 'Mexico': 'México', 'Morocco': 'Marrocos',
+    'Mozambique': 'Moçambique', 'Netherlands': 'Países Baixos',
+    'New Zealand': 'Nova Zelândia', 'Nigeria': 'Nigéria',
+    'Norway': 'Noruega', 'Oman': 'Omã', 'Panama': 'Panamá',
+    'Paraguay': 'Paraguai', 'Peru': 'Peru', 'Poland': 'Polônia',
+    'Portugal': 'Portugal', 'Qatar': 'Catar', 'Romania': 'Romênia',
+    'Saudi Arabia': 'Arábia Saudita', 'Scotland': 'Escócia',
+    'Senegal': 'Senegal', 'Serbia': 'Sérvia', 'Slovakia': 'Eslováquia',
+    'Slovenia': 'Eslovênia', 'South Africa': 'África do Sul',
+    'Spain': 'Espanha', 'Switzerland': 'Suíça',
+    'Tanzania': 'Tanzânia', 'Trinidad and Tobago': 'Trinidad e Tobago',
+    'Tunisia': 'Tunísia', 'Turkey': 'Turquia', 'Türkiye': 'Turquia',
+    'Ukraine': 'Ucrânia', 'United States': 'Estados Unidos',
+    'USA': 'Estados Unidos', 'Uruguay': 'Uruguai',
+    'Uzbekistan': 'Uzbequistão', 'Venezuela': 'Venezuela',
+    'Wales': 'País de Gales', 'Zambia': 'Zâmbia',
+};
+
+let idioma = localStorage.getItem('lang-copa') || 'pt';
+
+function traduzir(nome) {
+    return idioma === 'pt' ? (TRADUCOES[nome] || nome) : nome;
+}
+
+function toggleIdioma() {
+    idioma = idioma === 'pt' ? 'en' : 'pt';
+    localStorage.setItem('lang-copa', idioma);
+    document.getElementById('lang-btn').textContent = idioma.toUpperCase();
+    refreshNomes();
+    if (campeaoOK) renderCampeao();
+}
+
+function refreshNomes() {
+    document.querySelectorAll('[data-name-en]').forEach(el => {
+        el.textContent = traduzir(el.dataset.nameEn);
+    });
+}
 
 // ── State ─────────────────────────────────────────────────────────────────
 const st = {
@@ -416,7 +509,7 @@ const st = {
 };
 
 let selCampeao = null, selVice = null;
-let gruposOK = false, campeaoOK = false;
+let gruposOK = false, campeaoOK = false, chaveamentoOK = false;
 
 // ── Init ──────────────────────────────────────────────────────────────────
 async function init() {
@@ -436,6 +529,7 @@ async function init() {
         });
 
         document.getElementById('user-name').textContent = `Olá, ${st.nome.split(' ')[0]}!`;
+        document.getElementById('lang-btn').textContent = idioma.toUpperCase();
 
         if (st.token) document.getElementById('share-bar').classList.remove('hidden');
 
@@ -453,8 +547,9 @@ function showTab(id) {
     document.querySelectorAll('.tab-section').forEach(s =>
         s.classList.toggle('hidden', s.id !== `tab-${id}`));
 
-    if (id === 'grupos' && !gruposOK) carregarGrupos();
-    if (id === 'campeao' && !campeaoOK) renderCampeao();
+    if (id === 'grupos'       && !gruposOK)       carregarGrupos();
+    if (id === 'chaveamento'  && !chaveamentoOK)  carregarChaveamento();
+    if (id === 'campeao'      && !campeaoOK)      renderCampeao();
 }
 
 // ── Jogos ─────────────────────────────────────────────────────────────────
@@ -541,11 +636,11 @@ function buildMatchCard(ev) {
         <div class="match-teams">
             <div class="team home">
                 <img src="${home.team.logo || ''}" alt="${esc(home.team.name)}" class="team-flag" onerror="this.style.display='none'">
-                <span class="team-name">${home.team.name}</span>
+                <span class="team-name" data-name-en="${esc(home.team.name)}">${traduzir(home.team.name)}</span>
             </div>
             <div class="score-area">${scoreHtml}</div>
             <div class="team away">
-                <span class="team-name">${away.team.name}</span>
+                <span class="team-name" data-name-en="${esc(away.team.name)}">${traduzir(away.team.name)}</span>
                 <img src="${away.team.logo || ''}" alt="${esc(away.team.name)}" class="team-flag" onerror="this.style.display='none'">
             </div>
         </div>
@@ -639,7 +734,7 @@ function buildGrupoCard(grupo) {
             <td>${i + 1}</td>
             <td class="team-cell">
                 <img src="${logo}" alt="" class="flag-sm" onerror="this.style.display='none'">
-                ${entry.team?.name || '—'}
+                <span data-name-en="${entry.team?.name || ''}">${traduzir(entry.team?.name || '—')}</span>
             </td>
             <td>${stats.points        ?? '—'}</td>
             <td>${stats.gamesPlayed   ?? '—'}</td>
@@ -664,21 +759,98 @@ function buildGrupoCard(grupo) {
     return div;
 }
 
+// ── Chaveamento ───────────────────────────────────────────────────────────
+const FASES_KNOCKOUT = {
+    'round-of-32':    'Fase Eliminatória',
+    'round-of-16':    'Oitavas de Final',
+    'quarterfinals':  'Quartas de Final',
+    'semifinals':     'Semifinais',
+    '3rd-place-match':'3º Lugar',
+    'final':          'Final',
+};
+const FASES_ORDER = ['round-of-32','round-of-16','quarterfinals','semifinals','3rd-place-match','final'];
+
+async function carregarChaveamento() {
+    const el = document.getElementById('chaveamento-container');
+    try {
+        const res    = await fetch(`${ESPN.scoreboard}?dates=20260629-20260719`);
+        const data   = await res.json();
+        const events = data.events || [];
+
+        const knockout = events.filter(ev => {
+            const slug = ev.season?.slug;
+            return slug && slug !== 'grupos' && FASES_KNOCKOUT[slug];
+        });
+
+        if (!knockout.length) {
+            el.innerHTML = '<div class="empty-state">Fase eliminatória ainda não iniciou.<br>Disponível a partir de 29/06.</div>';
+            chaveamentoOK = true;
+            return;
+        }
+
+        const byRound = {};
+        knockout.forEach(ev => {
+            const slug = ev.season?.slug || 'outros';
+            (byRound[slug] = byRound[slug] || []).push(ev);
+        });
+
+        const bracket = document.createElement('div');
+        bracket.className = 'bracket';
+
+        FASES_ORDER.forEach(slug => {
+            if (!byRound[slug]) return;
+            const col = document.createElement('div');
+            col.className = 'bracket-round';
+            const isHighlight = slug === 'final';
+            col.innerHTML = `<div class="bracket-round-title${isHighlight ? ' highlight' : ''}">${FASES_KNOCKOUT[slug]}</div>`;
+            byRound[slug].forEach(ev => col.appendChild(buildMatchCard(ev)));
+            bracket.appendChild(col);
+        });
+
+        el.innerHTML = '';
+        el.appendChild(bracket);
+        chaveamentoOK = true;
+    } catch {
+        el.innerHTML = '<div class="error-state">Erro ao carregar o chaveamento.</div>';
+    }
+}
+
 // ── Times ─────────────────────────────────────────────────────────────────
 async function carregarTimes() {
     try {
-        const res  = await fetch(ESPN.teams);
-        const data = await res.json();
-        st.times = (data.sports?.[0]?.leagues?.[0]?.teams || []).map(t => t.team);
+        const res    = await fetch(ESPN.standings);
+        const data   = await res.json();
+        const grupos = data.children || [];
+        st.times = [];
+        grupos.forEach(g => {
+            (g.standings?.entries || []).forEach(entry => {
+                const t = entry.team;
+                if (t) st.times.push({
+                    id:    t.id,
+                    name:  t.name,
+                    logos: t.logos || [],
+                    logo:  t.logos?.[0]?.href || '',
+                });
+            });
+        });
     } catch { st.times = []; }
 }
 
 // ── Campeão ───────────────────────────────────────────────────────────────
 function renderCampeao() {
-    campeaoOK = true;
     const el = document.getElementById('campeao-container');
+    if (!st.times.length) {
+        el.innerHTML = '<div class="loading">Carregando times...</div>';
+        carregarTimes().then(() => {
+            if (st.times.length) renderCampeao();
+            else el.innerHTML = '<div class="error-state">Não foi possível carregar os times.</div>';
+        });
+        return;
+    }
+    const firstRender = !campeaoOK;
+    campeaoOK = true;
 
-    if (st.campeao && st.times.length) {
+    if (firstRender && st.campeao && st.times.length) {
         selCampeao = st.times.find(t => t.id === st.campeao.time_campeao_id) || null;
         selVice    = st.times.find(t => t.id === st.campeao.time_vice_id)    || null;
     }
@@ -689,7 +861,7 @@ function renderCampeao() {
             <div class="slot-label">${label}</div>
             ${sel
                 ? `<img src="${logo}" class="team-flag" style="width:44px;height:33px" onerror="this.style.display='none'">
-                   <div class="slot-team">${sel.name}</div>`
+                   <div class="slot-team" data-name-en="${esc(sel.name)}">${traduzir(sel.name)}</div>`
                 : `<div class="slot-empty">Não escolhido</div>`}
         </div>`;
     };
@@ -702,9 +874,9 @@ function renderCampeao() {
             let cls = 'team-card';
             if (isCamp) cls += ' is-campeao';
             if (isVice) cls += ' is-vice';
-            return `<div class="${cls}" onclick="selecionarTime('${t.id}')">
-                <img src="${logo}" alt="${t.name}" class="team-card-flag" onerror="this.style.display='none'">
-                <div class="team-card-name">${t.name}</div>
+            return `<div class="${cls}" data-name-en="${esc(t.name)}" onclick="selecionarTime('${t.id}')">
+                <img src="${logo}" alt="${esc(t.name)}" class="team-card-flag" onerror="this.style.display='none'">
+                <div class="team-card-name">${traduzir(t.name)}</div>
             </div>`;
         }).join('')
         : '<div class="loading">Carregando times...</div>';
@@ -734,7 +906,7 @@ function selecionarTime(id) {
     else if (selVice?.id === id)    selVice = null;
     else if (!selCampeao)           selCampeao = time;
     else if (!selVice)              selVice = time;
-    else                            selVice = time;
+    else { selCampeao = time; selVice = null; }
 
     const q = document.getElementById('busca-time')?.value || '';
     renderCampeao();
@@ -747,8 +919,9 @@ function selecionarTime(id) {
 function filtrarTimes() {
     const q = (document.getElementById('busca-time')?.value || '').toLowerCase();
     document.querySelectorAll('.team-card').forEach(c => {
-        const name = c.querySelector('.team-card-name')?.textContent.toLowerCase() || '';
-        c.style.display = name.includes(q) ? '' : 'none';
+        const en = (c.dataset.nameEn || '').toLowerCase();
+        const pt = (TRADUCOES[c.dataset.nameEn] || '').toLowerCase();
+        c.style.display = (en.includes(q) || pt.includes(q)) ? '' : 'none';
     });
 }
 
