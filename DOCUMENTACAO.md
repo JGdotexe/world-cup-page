@@ -89,6 +89,18 @@ Nossa aplicação atende aos 4 requisitos do CRUD de forma elegante no Banco de 
 }
 ```
 
+**💡 Lógica de Implementação do Compartilhamento (Passo a Passo para o Frontend):**
+1. Na tela principal logada (`painel.html`), quando você buscar os palpites da pessoa em `/backend/buscar_palpites.php`, o PHP vai te devolver um `token_compartilhamento` (Ex: `abc123xyz`).
+2. Com esse token em mãos, crie um campo ou botão de "Copiar Link" na tela, contendo um link gerado por você, no formato: `http://localhost/frontend/compartilhado.html?token=abc123xyz`.
+3. Crie a página `compartilhado.html`. Ela será *Read-Only* (somente leitura), não terá os botões interativos de votar, servirá apenas para mostrar o resultado.
+4. Assim que alguém carregar a página `compartilhado.html`, use o Javascript para fisgar aquele Token direto da URL do navegador:
+   ```javascript
+   const urlParams = new URLSearchParams(window.location.search);
+   const tokenDaUrl = urlParams.get('token');
+   ```
+5. Jogue esse token num `fetch()` para o endpoint público: `fetch('../backend/bolao_compartilhado.php?token=' + tokenDaUrl)`.
+6. O PHP vai te devolver o "nome_dono" (Ex: "João Silva") e o array com as apostas dele. Use isso para desenhar uma tela dizendo "Este é o Bolão do João Silva!" e cruze os dados com a API da ESPN exatamente como você fez no painel original.
+
 ## 4. Dica de Integração com a ESPN (Para o Front-end)
 A API da ESPN é pública e não precisa de Token. Aqui está uma prévia de como os dados retornam para facilitar a construção da interface:
 
