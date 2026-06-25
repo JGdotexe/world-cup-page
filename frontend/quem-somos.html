@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quem Somos · Bolão da Copa 2026</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #07111f;
+            color: #e2e8f0;
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #0a1628 0%, #0f2040 100%);
+            border-bottom: 1px solid rgba(245,197,24,0.18);
+        }
+        .navbar-brand { color: #f5c518 !important; font-weight: 700; font-size: 1rem; }
+        .nav-link     { color: #94a3b8 !important; font-size: 0.85rem; }
+        .nav-link:hover { color: #f5c518 !important; }
+
+        .btn-gold {
+            background: #f5c518; color: #07111f;
+            font-weight: 700; border: none;
+            padding: 0.45rem 1.1rem; border-radius: 6px;
+            font-size: 0.82rem; transition: background 0.15s;
+        }
+        .btn-gold:hover { background: #ffd740; color: #07111f; }
+
+        /* Page header */
+        .page-hero {
+            padding: 3.5rem 1rem 2.5rem;
+            text-align: center;
+            border-bottom: 1px solid #1a3050;
+        }
+        .page-hero h1 { font-size: 1.75rem; font-weight: 800; color: #f5c518; margin-bottom: 0.5rem; }
+        .page-hero p  { font-size: 0.9rem; color: #64748b; margin: 0; }
+
+        /* Cards */
+        .section { padding: 3rem 1rem; }
+
+        .info-card {
+            background: #0d1829;
+            border: 1px solid #1a3050;
+            border-radius: 12px;
+            padding: 1.75rem;
+            height: 100%;
+        }
+
+        .info-card-label {
+            font-size: 0.68rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.12em;
+            color: #64748b; margin-bottom: 0.625rem;
+        }
+
+        .info-card-title {
+            font-size: 1rem; font-weight: 700;
+            color: #e2e8f0; margin-bottom: 0.75rem;
+        }
+
+        .info-card p {
+            font-size: 0.85rem; color: #94a3b8;
+            line-height: 1.65; margin: 0;
+        }
+
+        /* Team members */
+        .member-card {
+            background: #0d1829;
+            border: 1px solid #1a3050;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            height: 100%;
+        }
+
+        .member-avatar {
+            width: 64px; height: 64px;
+            border-radius: 50%;
+            background: rgba(245,197,24,0.12);
+            border: 2px solid rgba(245,197,24,0.25);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; margin: 0 auto 1rem;
+        }
+
+        .member-name {
+            font-size: 0.95rem; font-weight: 700;
+            color: #e2e8f0; margin-bottom: 0.25rem;
+        }
+
+        .member-role {
+            font-size: 0.75rem; color: #64748b;
+            text-transform: uppercase; letter-spacing: 0.08em;
+        }
+
+        /* Tech stack */
+        .tech-badge {
+            display: inline-block;
+            background: #0d1829;
+            border: 1px solid #1a3050;
+            color: #94a3b8;
+            font-size: 0.78rem; font-weight: 600;
+            border-radius: 6px;
+            padding: 0.35rem 0.75rem;
+            margin: 0.2rem;
+        }
+
+        .section-title {
+            font-size: 0.7rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.12em;
+            color: #64748b; margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #1a3050;
+        }
+
+        footer {
+            padding: 2rem 1rem;
+            text-align: center;
+            font-size: 0.78rem;
+            color: #374151;
+            border-top: 1px solid #1a3050;
+        }
+        footer a { color: #64748b; text-decoration: none; }
+        footer a:hover { color: #94a3b8; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="home.html">🏆 Copa 2026 · Bolão</a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+            style="color:#94a3b8">
+            <span class="navbar-toggler-icon" style="filter:invert(1) sepia(1) saturate(0) brightness(1.5)"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                <li class="nav-item"><a class="nav-link active" href="quem-somos.html" style="color:#f5c518!important">Quem somos</a></li>
+                <li class="nav-item"><a class="nav-link" href="cadastro.html">Cadastro</a></li>
+                <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                    <a href="login.html" class="btn btn-gold btn-sm px-3">Entrar</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="page-hero">
+    <div class="container">
+        <h1>Quem somos</h1>
+        <p>Projeto desenvolvido para a disciplina de Desenvolvimento Web · UFF</p>
+    </div>
+</div>
+
+<section class="section">
+    <div class="container">
+
+        <!-- Sobre o projeto -->
+        <div class="section-title">Sobre o projeto</div>
+        <div class="row g-3 mb-5">
+            <div class="col-md-6">
+                <div class="info-card">
+                    <div class="info-card-label">O problema</div>
+                    <div class="info-card-title">Acompanhar e palpitar em um só lugar</div>
+                    <p>Durante grandes campeonatos, torcedores não têm uma plataforma gratuita e unificada para acompanhar os jogos em tempo real e registrar seus palpites para compartilhar com amigos.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-card">
+                    <div class="info-card-label">A solução</div>
+                    <div class="info-card-title">Bolão da Copa 2026</div>
+                    <p>Uma aplicação web que consome a API pública da ESPN para exibir dados em tempo real — placares, tabelas de grupos e estatísticas — e permite que cada usuário registre e compartilhe seus palpites via link único.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Equipe -->
+        <div class="section-title">A dupla</div>
+        <div class="row g-3 justify-content-center mb-5">
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="member-card">
+                    <div class="member-avatar">👤</div>
+                    <div class="member-name">Hugo Leonardo Melo</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="member-card">
+                    <div class="member-avatar">👤</div>
+                    <div class="member-name">João Gabriel</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tecnologias -->
+        <div class="section-title">Tecnologias utilizadas</div>
+        <div class="mb-5">
+            <span class="tech-badge">HTML5</span>
+            <span class="tech-badge">CSS3</span>
+            <span class="tech-badge">Bootstrap 5</span>
+            <span class="tech-badge">JavaScript (ES6+)</span>
+            <span class="tech-badge">PHP 8.2</span>
+            <span class="tech-badge">MySQL 8</span>
+            <span class="tech-badge">ESPN API</span>
+            <span class="tech-badge">Docker</span>
+        </div>
+
+        <!-- Arquitetura -->
+        <div class="section-title">Arquitetura</div>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="info-card">
+                    <div class="info-card-label">Backend · PHP + MySQL</div>
+                    <div class="info-card-title">API de armazenamento</div>
+                    <p>O servidor PHP gerencia exclusivamente autenticação de usuários (sessões) e persistência dos palpites no banco MySQL. Não se comunica com a ESPN — isso mantém o backend leve e compatível com hospedagem gratuita.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-card">
+                    <div class="info-card-label">Frontend · JavaScript</div>
+                    <div class="info-card-title">Motor de exibição</div>
+                    <p>O JavaScript rodando no navegador do usuário faz as chamadas à API pública da ESPN, recebe os dados dos jogos, cruza com os palpites salvos no nosso backend e exibe tudo na tela dinamicamente.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p class="mb-1">🏆 Bolão da Copa 2026 &nbsp;·&nbsp; Universidade Federal Fluminense</p>
+        <p><a href="home.html">Início</a> &nbsp;·&nbsp; <a href="login.html">Login</a> &nbsp;·&nbsp; <a href="cadastro.html">Cadastro</a></p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

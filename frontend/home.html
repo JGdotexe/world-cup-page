@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bolão da Copa 2026</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #07111f;
+            color: #e2e8f0;
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #0a1628 0%, #0f2040 100%);
+            border-bottom: 1px solid rgba(245,197,24,0.18);
+        }
+
+        .navbar-brand { color: #f5c518 !important; font-weight: 700; font-size: 1rem; }
+        .nav-link     { color: #94a3b8 !important; font-size: 0.85rem; }
+        .nav-link:hover { color: #f5c518 !important; }
+
+        .hero {
+            padding: 5rem 1rem 4rem;
+            text-align: center;
+        }
+
+        .hero-trophy { font-size: 4rem; line-height: 1; margin-bottom: 1.5rem; display: block; }
+
+        .hero-title {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #f5c518;
+            margin-bottom: 0.75rem;
+            line-height: 1.15;
+        }
+
+        .hero-sub {
+            font-size: 1rem;
+            color: #94a3b8;
+            max-width: 520px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.6;
+        }
+
+        .btn-gold {
+            background: #f5c518;
+            color: #07111f;
+            font-weight: 700;
+            border: none;
+            padding: 0.7rem 1.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: background 0.15s;
+        }
+        .btn-gold:hover { background: #ffd740; color: #07111f; }
+
+        .btn-outline-gold {
+            background: transparent;
+            color: #f5c518;
+            border: 1px solid rgba(245,197,24,0.4);
+            font-weight: 700;
+            padding: 0.7rem 1.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.15s;
+        }
+        .btn-outline-gold:hover { background: rgba(245,197,24,0.08); color: #f5c518; border-color: #f5c518; }
+
+        /* Features */
+        .features { padding: 3rem 1rem 4rem; }
+
+        .feature-card {
+            background: #0d1829;
+            border: 1px solid #1a3050;
+            border-radius: 12px;
+            padding: 1.75rem 1.5rem;
+            height: 100%;
+            transition: border-color 0.15s;
+        }
+        .feature-card:hover { border-color: rgba(245,197,24,0.2); }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-text {
+            font-size: 0.82rem;
+            color: #64748b;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* CRUD section */
+        .crud-section {
+            background: #0d1829;
+            border-top: 1px solid #1a3050;
+            border-bottom: 1px solid #1a3050;
+            padding: 3rem 1rem;
+        }
+
+        .crud-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .crud-item {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .crud-badge {
+            display: inline-block;
+            background: rgba(245,197,24,0.12);
+            border: 1px solid rgba(245,197,24,0.3);
+            color: #f5c518;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            border-radius: 6px;
+            padding: 0.25rem 0.625rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .crud-desc {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 1rem;
+            text-align: center;
+            font-size: 0.78rem;
+            color: #374151;
+            border-top: 1px solid #1a3050;
+        }
+
+        footer a { color: #64748b; text-decoration: none; }
+        footer a:hover { color: #94a3b8; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="home.html">🏆 Copa 2026 · Bolão</a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+            style="color:#94a3b8">
+            <span class="navbar-toggler-icon" style="filter:invert(1) sepia(1) saturate(0) brightness(1.5)"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                <li class="nav-item"><a class="nav-link" href="quem-somos.html">Quem somos</a></li>
+                <li class="nav-item"><a class="nav-link" href="cadastro.html">Cadastro</a></li>
+                <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                    <a href="login.html" class="btn btn-gold btn-sm px-3">Entrar</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="container">
+        <span class="hero-trophy">🏆</span>
+        <h1 class="hero-title">Bolão da Copa do Mundo 2026</h1>
+        <p class="hero-sub">
+            Acompanhe os jogos em tempo real, faça seus palpites e compartilhe seu bolão com os amigos.
+            Tudo em um só lugar, de graça.
+        </p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="cadastro.html" class="btn btn-gold">Criar minha conta</a>
+            <a href="login.html" class="btn btn-outline-gold">Já tenho conta</a>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="features">
+    <div class="container">
+        <div class="row g-3 justify-content-center">
+            <div class="col-sm-6 col-lg-3">
+                <div class="feature-card">
+                    <span class="feature-icon">⚽</span>
+                    <div class="feature-title">Jogos em tempo real</div>
+                    <p class="feature-text">Placares, bandeiras e status de cada partida atualizados ao vivo via API oficial da ESPN.</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="feature-card">
+                    <span class="feature-icon">🗳️</span>
+                    <div class="feature-title">Faça seus palpites</div>
+                    <p class="feature-text">Vote em cada jogo: time da casa, empate ou visitante. Seus palpites ficam salvos e podem ser alterados.</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="feature-card">
+                    <span class="feature-icon">📊</span>
+                    <div class="feature-title">Tabela de grupos</div>
+                    <p class="feature-text">Acompanhe a classificação de todos os grupos com pontos, vitórias, saldo de gols e mais.</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="feature-card">
+                    <span class="feature-icon">🔗</span>
+                    <div class="feature-title">Compartilhe seu bolão</div>
+                    <p class="feature-text">Gere um link único e mostre seus palpites para qualquer pessoa, sem que ela precise criar conta.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CRUD reference -->
+<section class="crud-section">
+    <div class="container">
+        <div class="crud-title">Operações do sistema</div>
+        <div class="row g-0 justify-content-center">
+            <div class="col-6 col-md-3">
+                <div class="crud-item">
+                    <div class="crud-badge">CREATE</div>
+                    <div class="crud-desc">Cadastro de usuário e criação de palpites</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="crud-item">
+                    <div class="crud-badge">READ</div>
+                    <div class="crud-desc">Consulta de palpites próprios e compartilhados</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="crud-item">
+                    <div class="crud-badge">UPDATE</div>
+                    <div class="crud-desc">Alteração de palpites a qualquer momento</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="crud-item">
+                    <div class="crud-badge">DELETE</div>
+                    <div class="crud-desc">Exclusão completa da conta e dados</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p class="mb-1">🏆 Bolão da Copa 2026 &nbsp;·&nbsp; Universidade Federal Fluminense</p>
+        <p><a href="quem-somos.html">Quem somos</a></p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
