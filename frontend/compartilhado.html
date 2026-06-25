@@ -214,7 +214,18 @@ const TRADUCOES = {
 let idioma = localStorage.getItem('lang-copa') || 'pt';
 
 function traduzir(nome) {
-    return idioma === 'pt' ? (TRADUCOES[nome] || nome) : nome;
+    if (!nome) return '';
+    if (idioma === 'en') return nome;
+    if (TRADUCOES[nome]) return TRADUCOES[nome];
+    
+    let t = nome;
+    t = t.replace(/Group ([A-Z]) (1st|2nd|3rd) Place/gi, (m, g, p) => (p==='1st'?'1º':p==='2nd'?'2º':'3º') + ' Lugar Grp ' + g);
+    t = t.replace(/Third Place Group (.*)/gi, "3º Lugar Grp $1");
+    t = t.replace(/Round of 32 (\d+) Winner/gi, "Venc. 16-avos $1");
+    t = t.replace(/Round of 16 (\d+) Winner/gi, "Venc. Oitavas $1");
+    t = t.replace(/Quarterfinal (\d+) Winner/gi, "Venc. Quartas $1");
+    t = t.replace(/Semifinal (\d+) Winner/gi, "Venc. Semi $1");
+    return t;
 }
 
 function toggleIdioma() {
