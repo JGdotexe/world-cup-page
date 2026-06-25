@@ -1,0 +1,10 @@
+# Ignorar documento da faculdade
+INFORMAÇÕES TRABALHO - SEGUNDA AVALIAÇÃO DESENVOLVIMENTO WEB.pdf
+
+# Ignorar arquivo de diagrama
+schema.dbml
+
+# Ignorar volumes e arquivos do docker local, se houver
+db_data/
+.idea/
+.vscode/
