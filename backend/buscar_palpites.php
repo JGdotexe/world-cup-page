@@ -21,10 +21,16 @@ try {
     $stmt->execute([$usuario_id]);
     $palpites = $stmt->fetchAll();
 
+    $stmtCampeao = $pdo->prepare("SELECT time_campeao_id, time_vice_id FROM palpites_campeao WHERE usuario_id = ?");
+    $stmtCampeao->execute([$usuario_id]);
+    $campeao = $stmtCampeao->fetch() ?: null;
+
     echo json_encode([
-        "sucesso" => true, 
+        "sucesso" => true,
+        "nome" => $_SESSION['usuario_nome'] ?? '',
         "token_compartilhamento" => $token,
-        "palpites" => $palpites
+        "palpites" => $palpites,
+        "palpite_campeao" => $campeao,
     ]);
 } catch (\PDOException $e) {
     echo json_encode(["sucesso" => false, "mensagem" => "Erro: " . $e->getMessage()]);

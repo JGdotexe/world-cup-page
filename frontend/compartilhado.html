@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bolão Compartilhado</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:       #07111f;
+            --card:     #0d1829;
+            --border:   #1a3050;
+            --gold:     #f5c518;
+            --gold-dim: rgba(245,197,24,0.1);
+            --green:    #22c55e;
+            --live:     #10b981;
+            --text:     #e2e8f0;
+            --muted:    #64748b;
+            --sub:      #94a3b8;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+        }
+
+        /* ── Header ── */
+        .app-header {
+            background: linear-gradient(135deg, #0a1628 0%, #0f2040 100%);
+            border-bottom: 1px solid rgba(245,197,24,0.18);
+            padding: 0.875rem 1.25rem;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 1rem;
+        }
+        .app-logo { display: flex; align-items: center; gap: 0.75rem; }
+        .app-trophy { font-size: 1.6rem; line-height: 1; }
+        .app-title { font-size: 1rem; font-weight: 700; color: var(--gold); }
+        .app-sub { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; margin-top: 1px; }
+
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            padding: 0.45rem 0.875rem; border-radius: 6px; border: none;
+            font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all 0.15s;
+        }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--sub); }
+        .btn-outline:hover { border-color: var(--sub); color: var(--text); }
+
+        /* ── Owner banner ── */
+        .owner-banner {
+            max-width: 820px; margin: 1.25rem auto 0;
+            padding: 0 1rem;
+        }
+        .owner-card {
+            background: var(--gold-dim);
+            border: 1px solid rgba(245,197,24,0.25);
+            border-radius: 10px; padding: 1rem 1.25rem;
+            display: flex; align-items: center; gap: 0.75rem;
+        }
+        .owner-icon { font-size: 1.75rem; line-height: 1; }
+        .owner-label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+        .owner-name  { font-size: 1rem; font-weight: 700; color: var(--gold); }
+        .readonly-badge {
+            margin-left: auto; background: rgba(148,163,184,0.1);
+            border: 1px solid var(--border); border-radius: 99px;
+            padding: 0.25rem 0.625rem; font-size: 0.68rem; color: var(--sub);
+            font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em;
+        }
+
+        /* ── Content ── */
+        .content { max-width: 820px; margin: 0 auto; padding: 1.25rem 1rem; }
+
+        /* ── Date header ── */
+        .date-header {
+            font-size: 0.7rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--muted); padding: 1rem 0 0.5rem;
+            border-bottom: 1px solid var(--border); margin-bottom: 0.75rem;
+        }
+
+        /* ── Match card ── */
+        .match-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 10px; padding: 1rem; margin-bottom: 0.625rem;
+        }
+        .match-meta {
+            display: flex; align-items: center; gap: 0.5rem;
+            font-size: 0.68rem; color: var(--muted);
+            text-transform: uppercase; letter-spacing: 0.07em;
+            margin-bottom: 0.75rem;
+        }
+        .sep { color: var(--border); }
+        .badge-live { color: var(--live); font-weight: 700; }
+        .badge-post { color: var(--muted); }
+        .badge-pre  { color: var(--sub); }
+
+        .match-teams {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 0.75rem; margin-bottom: 0.875rem;
+        }
+        .team { display: flex; align-items: center; gap: 0.5rem; flex: 1; min-width: 0; }
+        .team.home { justify-content: flex-start; }
+        .team.away { justify-content: flex-end; }
+        .team-flag { width: 38px; height: 28px; object-fit: contain; border-radius: 3px; flex-shrink: 0; }
+        .team-name { font-size: 0.9rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .score-area { text-align: center; flex-shrink: 0; min-width: 64px; }
+        .score     { font-size: 1.3rem; font-weight: 700; color: var(--gold); }
+        .score-sep { font-size: 1rem; color: var(--border); }
+
+        /* ── Pick display ── */
+        .pick-row {
+            display: flex; gap: 0.4rem; align-items: center;
+        }
+        .pick-label {
+            font-size: 0.68rem; color: var(--muted);
+            text-transform: uppercase; letter-spacing: 0.07em;
+            margin-right: 0.25rem;
+        }
+        .pick-chip {
+            padding: 0.35rem 0.875rem;
+            border: 1px solid var(--border); border-radius: 6px;
+            font-size: 0.72rem; font-weight: 700; letter-spacing: 0.07em;
+            color: var(--gold); background: var(--gold-dim);
+            border-color: rgba(245,197,24,0.35);
+        }
+        .pick-chip.correct {
+            color: var(--green); background: rgba(34,197,94,0.1);
+            border-color: rgba(34,197,94,0.4);
+        }
+        .pick-chip.wrong { opacity: 0.35; }
+        .no-pick {
+            font-size: 0.72rem; color: var(--muted); font-style: italic;
+        }
+
+        /* ── States ── */
+        .loading, .empty-state { text-align: center; padding: 3rem; color: var(--muted); font-size: 0.875rem; }
+        .error-state { text-align: center; padding: 3rem; color: #ef4444; font-size: 0.875rem; }
+
+        .error-full {
+            max-width: 480px; margin: 4rem auto; text-align: center; padding: 0 1.5rem;
+        }
+        .error-full h2 { font-size: 1rem; color: var(--text); margin-bottom: 0.5rem; }
+        .error-full p  { font-size: 0.875rem; color: var(--muted); margin-bottom: 1.5rem; }
+
+        @media (max-width: 500px) {
+            .team-name { font-size: 0.78rem; }
+            .team-flag { width: 30px; height: 22px; }
+            .score { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="app-header">
+    <div class="app-logo">
+        <span class="app-trophy">🏆</span>
+        <div>
+            <div class="app-title">Copa do Mundo 2026</div>
+            <div class="app-sub">Bolão Compartilhado</div>
+        </div>
+    </div>
+    <a href="login.html" class="btn btn-outline">Fazer meu bolão</a>
+</header>
+
+<div id="root"><div class="loading">Carregando bolão...</div></div>
+
+<script>
+const ESPN_SCOREBOARD = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard';
+
+async function init() {
+    const root = document.getElementById('root');
+
+    const token = new URLSearchParams(location.search).get('token');
+    if (!token) {
+        root.innerHTML = renderErr('Link inválido', 'Este link não contém um token de compartilhamento válido.');
+        return;
+    }
+
+    try {
+        const [bolaoRes, scoreRes] = await Promise.all([
+            fetch(`../backend/bolao_compartilhado.php?token=${encodeURIComponent(token)}`),
+            fetch(ESPN_SCOREBOARD),
+        ]);
+
+        const bolao = await bolaoRes.json();
+        if (!bolao.sucesso) {
+            root.innerHTML = renderErr('Bolão não encontrado', bolao.mensagem || 'Este link pode estar expirado ou inválido.');
+            return;
+        }
+
+        const espn    = await scoreRes.json();
+        const events  = espn.events || [];
+        const palpites = {};
+        (bolao.palpites || []).forEach(p => { palpites[p.jogo_id] = p.resultado_escolhido; });
+
+        document.title = `Bolão de ${bolao.nome_dono} · Copa 2026`;
+
+        // Owner banner
+        const banner = document.createElement('div');
+        banner.className = 'owner-banner';
+        banner.innerHTML = `
+            <div class="owner-card">
+                <span class="owner-icon">⚽</span>
+                <div>
+                    <div class="owner-label">Bolão de</div>
+                    <div class="owner-name">${bolao.nome_dono}</div>
+                </div>
+                <span class="readonly-badge">Somente leitura</span>
+            </div>`;
+
+        const content = document.createElement('div');
+        content.className = 'content';
+
+        if (!events.length) {
+            content.innerHTML = '<div class="empty-state">Nenhum jogo disponível no momento.</div>';
+        } else {
+            const byDate = {};
+            events.forEach(ev => {
+                const day = ev.date.split('T')[0];
+                (byDate[day] = byDate[day] || []).push(ev);
+            });
+
+            Object.entries(byDate).forEach(([date, evs]) => {
+                const h = document.createElement('div');
+                h.className = 'date-header';
+                h.textContent = formatDate(date);
+                content.appendChild(h);
+                evs.forEach(ev => content.appendChild(buildCard(ev, palpites)));
+            });
+        }
+
+        root.innerHTML = '';
+        root.appendChild(banner);
+        root.appendChild(content);
+
+    } catch (e) {
+        console.error(e);
+        root.innerHTML = renderErr('Erro ao carregar', 'Não foi possível carregar o bolão. Tente novamente mais tarde.');
+    }
+}
+
+function buildCard(ev, palpites) {
+    const comp = ev.competitions[0];
+    const home = comp.competitors.find(c => c.homeAway === 'home') || comp.competitors[0];
+    const away = comp.competitors.find(c => c.homeAway === 'away') || comp.competitors[1];
+    const gs   = ev.status.type.state;
+    const pick = palpites[ev.id];
+    const fase = getFase(ev);
+
+    let winner = null;
+    if (gs === 'post') {
+        const hs = parseInt(home.score ?? 0);
+        const as = parseInt(away.score ?? 0);
+        winner = hs > as ? 'CASA' : as > hs ? 'VISITANTE' : 'EMPATE';
+    }
+
+    let badge = '';
+    if (gs === 'in') {
+        const clock = ev.status.displayClock ? ` · ${ev.status.displayClock}` : '';
+        badge = `<span class="badge-live">● AO VIVO${clock}</span>`;
+    } else if (gs === 'post') {
+        badge = `<span class="badge-post">Encerrado</span>`;
+    } else {
+        badge = `<span class="badge-pre">${formatDateTime(ev.date)}</span>`;
+    }
+
+    const scoreHtml = gs === 'pre'
+        ? `<span class="score-sep">×</span>`
+        : `<span class="score">${home.score ?? 0} — ${away.score ?? 0}</span>`;
+
+    let pickHtml = '';
+    if (pick) {
+        let chipCls = 'pick-chip';
+        if (gs === 'post' && winner) {
+            chipCls += winner === pick ? ' correct' : ' wrong';
+        }
+        pickHtml = `<div class="pick-row">
+            <span class="pick-label">Palpite:</span>
+            <span class="${chipCls}">${pick}</span>
+        </div>`;
+    } else {
+        pickHtml = `<div class="pick-row"><span class="no-pick">Sem palpite para este jogo</span></div>`;
+    }
+
+    const card = document.createElement('div');
+    card.className = 'match-card';
+    card.innerHTML = `
+        <div class="match-meta">
+            ${esc(fase)} <span class="sep">·</span> ${badge}
+        </div>
+        <div class="match-teams">
+            <div class="team home">
+                <img src="${home.team.logo || ''}" alt="${esc(home.team.name)}" class="team-flag" onerror="this.style.display='none'">
+                <span class="team-name">${home.team.name}</span>
+            </div>
+            <div class="score-area">${scoreHtml}</div>
+            <div class="team away">
+                <span class="team-name">${away.team.name}</span>
+                <img src="${away.team.logo || ''}" alt="${esc(away.team.name)}" class="team-flag" onerror="this.style.display='none'">
+            </div>
+        </div>
+        ${pickHtml}`;
+    return card;
+}
+
+function renderErr(title, msg) {
+    return `<div class="error-full">
+        <h2>${esc(title)}</h2>
+        <p>${esc(msg)}</p>
+        <a href="login.html" class="btn btn-outline">Fazer meu bolão</a>
+    </div>`;
+}
+
+function formatDate(iso) {
+    const [y, m, d] = iso.split('-');
+    return new Date(y, m - 1, d).toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
+}
+
+function formatDateTime(iso) {
+    return new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+}
+
+function getFase(ev) {
+    const note = ev.notes?.[0];
+    if (note?.headline) return note.headline;
+    if (note?.text)     return note.text;
+    const stype = ev.season?.type?.name;
+    if (stype && stype !== 'Regular Season') return stype;
+    return 'Fase de Grupos';
+}
+
+function esc(s) {
+    return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
