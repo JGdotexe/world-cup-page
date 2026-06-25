@@ -89,7 +89,31 @@ Nossa aplicação atende aos 4 requisitos do CRUD de forma elegante no Banco de 
 }
 ```
 
-## 4. Dica de Integração com a ESPN
-A API da ESPN não precisa de Token. Basta o frontend fazer chamadas GET para:
-- Tabela de Classificação: `https://site.api.espn.com/apis/v2/sports/soccer/fifa.world/standings`
-- Placar dos Jogos: `https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard`
+## 4. Dica de Integração com a ESPN (Para o Front-end)
+A API da ESPN é pública e não precisa de Token. Aqui está uma prévia de como os dados retornam para facilitar a construção da interface:
+
+### A) Placar e Jogos (Scoreboard)
+**Endpoint:** `GET https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard`
+
+Neste endpoint você pega os jogos e manda pro usuário votar.
+**Onde encontrar os dados úteis no JSON retornado:**
+- `events`: Array principal contendo todos os jogos do dia/rodada.
+- `events[i].id`: É o **`jogo_id`** que você deve enviar para o nosso Backend quando o usuário votar!
+- `events[i].status.type.state`: Diz se o jogo não começou (`pre`), está rolando (`in`) ou acabou (`post`).
+- `events[i].competitions[0].competitors`: Array com os 2 times jogando.
+  - O índice `0` é o time da CASA (`homeAway: "home"`).
+  - O índice `1` é o time VISITANTE (`homeAway: "away"`).
+- `...competitors[x].team.name`: Nome da seleção (ex: "Brazil").
+- `...competitors[x].team.logo`: Link da imagem da bandeira/escudo do time!
+- `...competitors[x].score`: Placar do time (útil para verificar quem ganhou e pintar a tela do bolão de verde).
+
+### B) Tabelas e Grupos (Standings)
+**Endpoint:** `GET https://site.api.espn.com/apis/v2/sports/soccer/fifa.world/standings`
+
+Neste endpoint você monta a tabela de classificação clássica.
+**Onde encontrar os dados úteis no JSON retornado:**
+- `children`: Array representando os Grupos da Copa (Grupo A, Grupo B, etc).
+- `children[i].name`: O nome do grupo (ex: "Group A").
+- `children[i].standings.entries`: Array com os 4 times do grupo, **já ordenados do 1º ao 4º lugar**.
+- `...entries[j].team.name`: Nome da seleção.
+- `...entries[j].stats`: Array de estatísticas do time na tabela. Procure pelo objeto onde `type == "points"` para exibir os pontos, `type == "wins"` para vitórias, etc.
