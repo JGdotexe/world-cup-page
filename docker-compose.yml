@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   web:
+    image: ghcr.io/jgdotexe/world-cup-page:latest
     build: .
     container_name: bolao_web
     ports:
