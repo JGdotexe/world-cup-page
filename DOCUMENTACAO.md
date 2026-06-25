@@ -125,3 +125,10 @@ Este endpoint traz as informações estruturais do torneio. Para as chaves de ma
 - No endpoint de **Placar e Jogos (`scoreboard`)**, os jogos da fase de mata-mata vão aparecer normalmente.
 - O que muda é que dentro de `events[i].season` ou `events[i].notes`, a ESPN vai mandar uma flag identificando que aquele jogo é um "Round of 16" (Oitavas) ou "Quarterfinal" (Quartas). 
 - O frontend apenas precisa ler o texto/tipo do jogo retornado no `scoreboard` e agrupá-los visualmente em chaves para o usuário.
+
+### D) Outros Endpoints Interessantes (Bônus para o Front-end)
+A ESPN possui uma infinidade de dados públicos debaixo do caminho `.../fifa.world/`. Caso você queira criar seções extras (como "Estatísticas" ou "Notícias"), aqui estão algumas rotas úteis:
+- **Equipes e Elencos (`/teams` e `/teams/{id}/athletes`):** Retorna os times da copa e todos os jogadores convocados com foto, idade e posição.
+- **Estatísticas Globais (`/leaders`):** Lista quem fez mais gols (artilharia), quem deu mais assistências, estatísticas de cartões, etc.
+- **Lance a Lance / Resumo:** Acessando os detalhes de um `jogo_id` específico, você tem o "play-by-play", que é a narrativa em texto minuto a minuto (ex: "Chute de fora da área defendido..."), posse de bola, etc.
+- **Notícias (`/news`):** Manchetes e links de imagens oficiais sobre o andamento do torneio.

@@ -47,6 +47,10 @@ document.getElementById('formLogin').addEventListener('submit', function(e) {
         if (data.sucesso) {
             msgDiv.classList.add('alert-success');
             msgDiv.innerText = data.mensagem;
+            // Redireciona para a landing page depois de 1 segundo
+            setTimeout(() => {
+                window.location.href = 'painel.html';
+            }, 1000);
         } else {
             msgDiv.classList.add('alert-danger');
             msgDiv.innerText = data.mensagem;
