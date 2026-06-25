@@ -87,7 +87,7 @@
         .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
 
         /* ── Layout ── */
-        .content { max-width: 820px; margin: 0 auto; padding: 1.25rem 1rem; }
+        .content { max-width: 1200px; margin: 0 auto; padding: 1.25rem 1rem; }
         .hidden { display: none !important; }
 
         /* ── Share bar ── */
@@ -180,7 +180,7 @@
         /* ── Standings ── */
         .grupos-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 1rem;
         }
 
@@ -612,10 +612,28 @@ async function carregarGrupos() {
 }
 
 function buildGrupoCard(grupo) {
-    const entries = grupo.standings?.entries || [];
+    let entries = grupo.standings?.entries || [];
+    
+    // Mapeia e calcula os atributos de ordenação
+    entries.forEach(entry => {
+        const st = {};
+        (entry.stats || []).forEach(s => { st[s.type] = s.value; });
+        entry._stats = st; // Salva para não precisar fazer o loop de novo
+    });
+
+    // Ordenação: 1º Pontos (decrescente), 2º Saldo de Gols (decrescente)
+    entries.sort((a, b) => {
+        const ptsA = a._stats.points || 0;
+        const ptsB = b._stats.points || 0;
+        if (ptsA !== ptsB) return ptsB - ptsA;
+        
+        const sgA = a._stats.pointDifferential || 0;
+        const sgB = b._stats.pointDifferential || 0;
+        return sgB - sgA;
+    });
+
     const rows = entries.map((entry, i) => {
-        const stats = {};
-        (entry.stats || []).forEach(s => { stats[s.type] = s.value; });
+        const stats = entry._stats;
         const logo = entry.team?.logos?.[0]?.href || '';
         return `<tr class="${i < 2 ? 'row-qualif' : ''}">
             <td>${i + 1}</td>
